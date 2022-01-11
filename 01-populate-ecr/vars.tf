@@ -18,5 +18,5 @@ variable "region" {
 variable "profile" {
   description = "The name of the profile to use"
   type        = string
-  default     = "Pub1"
+  default     = "default"
 }
