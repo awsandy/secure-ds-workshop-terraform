@@ -8,5 +8,5 @@ resource "aws_ssm_parameter" "ds-shared-ecr-repository-DSSharedService-arn" {
   tags_all    = {}
   tier        = "Standard"
   type        = "String"
-  value       = aws_ecr_repository.ds-shared-container-images.arn
+  value       = data.aws_ecr_repository.ds-shared-container-images.arn
 }
