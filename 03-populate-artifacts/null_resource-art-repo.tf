@@ -22,8 +22,7 @@ resource "null_resource" "art-repo" {
         prf=${var.profile}
         rg=${data.aws_region.current.name}
         echo $prf 
-        echo $rg
-      
+        echo $rg      
 
         aws --region ${data.aws_region.current.name} codeartifact associate-external-connection \
         --domain ${var.art-domain} \
