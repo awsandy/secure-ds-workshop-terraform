@@ -3,8 +3,8 @@
 resource "aws_servicecatalog_product" "prod-pljydfz2ff7ys__port-ofv7uufanw5wk" {
   description = "Creates a SageMaker Studio User Profile."
   provisioning_artifact_parameters {
-    template_url = format("https://%s/quickstart/ds_env_studio_user_profile_v1-tf.yaml",data.aws_s3_bucket.mybucket.bucket_regional_domain_name)
-    type = "CLOUD_FORMATION_TEMPLATE"
+    template_url = format("https://%s/quickstart/ds_env_studio_user_profile_v1-tf.yaml", data.aws_s3_bucket.mybucket.bucket_regional_domain_name)
+    type         = "CLOUD_FORMATION_TEMPLATE"
   }
   lifecycle {
     ignore_changes = [provisioning_artifact_parameters, accept_language]

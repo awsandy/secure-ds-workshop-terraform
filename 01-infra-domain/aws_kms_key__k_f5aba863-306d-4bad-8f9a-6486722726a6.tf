@@ -15,7 +15,7 @@ resource "aws_kms_key" "k_f5aba863-306d-4bad-8f9a-6486722726a6" {
           Action = "kms:*"
           Effect = "Allow"
           Principal = {
-            AWS = format("arn:aws:iam::%s:root",data.aws_caller_identity.current.account_id)
+            AWS = format("arn:aws:iam::%s:root", data.aws_caller_identity.current.account_id)
           }
           Resource = "*"
           Sid      = "Enable IAM User Permissions"
@@ -60,7 +60,7 @@ resource "aws_kms_key" "k_f5aba863-306d-4bad-8f9a-6486722726a6" {
           }
           Effect = "Allow"
           Principal = {
-            AWS = format("arn:aws:iam::%s:root",data.aws_caller_identity.current.account_id)
+            AWS = format("arn:aws:iam::%s:root", data.aws_caller_identity.current.account_id)
           }
           Resource = "*"
           Sid      = "Allow access for Key Users"

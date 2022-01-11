@@ -25,7 +25,7 @@ resource "aws_vpc_endpoint" "vpce-0393e175e43e5e2b4" {
           Action    = "s3:GetObject"
           Effect    = "Allow"
           Principal = "*"
-          Resource  = format("arn:aws:s3:::assets-438097961670-%s/*",data.aws_region.current.name)
+          Resource  = format("arn:aws:s3:::assets-438097961670-%s/*", data.aws_region.current.name)
           Sid       = "S3PolicyForCodeArtifact"
         },
         {
@@ -33,7 +33,7 @@ resource "aws_vpc_endpoint" "vpce-0393e175e43e5e2b4" {
           Effect    = "Allow"
           Principal = "*"
           Resource  = "arn:aws:s3:::prod-eu-west-2-starport-layer-bucket/*"
-          Resource  = format("arn:aws:s3:::prod-%s-starport-layer-bucket/*",data.aws_region.current.name)
+          Resource  = format("arn:aws:s3:::prod-%s-starport-layer-bucket/*", data.aws_region.current.name)
           Sid       = "S3AccessToEcrSpecificBucket"
         },
       ]
@@ -45,7 +45,7 @@ resource "aws_vpc_endpoint" "vpce-0393e175e43e5e2b4" {
     aws_route_table.rtb-03041a7bb551a299c.id,
   ]
   security_group_ids = []
-  service_name = format("com.amazonaws.%s.s3",data.aws_region.current.name)
+  service_name       = format("com.amazonaws.%s.s3", data.aws_region.current.name)
   subnet_ids         = []
   tags               = {}
   tags_all           = {}

@@ -20,7 +20,7 @@ resource "aws_vpc_endpoint" "vpce-0ddcc8e84b7ceffe2" {
     aws_security_group.sg-0b49e7f1e576d908d.id,
   ]
 
-  service_name = format("com.amazonaws.%s.codecommit",data.aws_region.current.name)
+  service_name = format("com.amazonaws.%s.codecommit", data.aws_region.current.name)
   subnet_ids = [
     aws_subnet.subnet-025daba223195049c.id,
     aws_subnet.subnet-05a180294ca109595.id,

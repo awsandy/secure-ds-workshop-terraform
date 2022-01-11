@@ -12,5 +12,5 @@ resource "aws_ssm_parameter" "ds-subnet-a-DSSharedServices-id" {
   }
   tier  = "Standard"
   type  = "String"
-  value =  aws_subnet.subnet-025daba223195049c.id
+  value = aws_subnet.subnet-025daba223195049c.id
 }

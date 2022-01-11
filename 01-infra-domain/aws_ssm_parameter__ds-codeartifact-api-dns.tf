@@ -12,5 +12,5 @@ resource "aws_ssm_parameter" "ds-codeartifact-api-dns" {
   }
   tier  = "Standard"
   type  = "String"
-  value=aws_vpc_endpoint.vpce-0eb1a1f119f7bfa31.dns_entry[0].dns_name
+  value = aws_vpc_endpoint.vpce-0eb1a1f119f7bfa31.dns_entry[0].dns_name
 }

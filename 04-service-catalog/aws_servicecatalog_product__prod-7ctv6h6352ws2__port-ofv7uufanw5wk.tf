@@ -3,8 +3,8 @@
 resource "aws_servicecatalog_product" "prod-7ctv6h6352ws2__port-ofv7uufanw5wk" {
   description = "S3 buckets for hosting data and model, KMS Key and AWS Code Commit git repository to support data science teams."
   provisioning_artifact_parameters {
-    template_url = format("https://%s/quickstart/ds_environment-tf.yaml",data.aws_s3_bucket.mybucket.bucket_regional_domain_name)
-    type = "CLOUD_FORMATION_TEMPLATE"
+    template_url = format("https://%s/quickstart/ds_environment-tf.yaml", data.aws_s3_bucket.mybucket.bucket_regional_domain_name)
+    type         = "CLOUD_FORMATION_TEMPLATE"
   }
   lifecycle {
     ignore_changes = [provisioning_artifact_parameters, accept_language]

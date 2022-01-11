@@ -2,10 +2,10 @@
 # aws_subnet.subnet-05a180294ca109595:
 resource "aws_subnet" "subnet-05a180294ca109595" {
   assign_ipv6_address_on_creation = false
- 
-  availability_zone               = format("%sb",data.aws_region.current.name)
-  cidr_block                      = "10.2.2.0/24"
-  map_public_ip_on_launch         = false
+
+  availability_zone       = format("%sb", data.aws_region.current.name)
+  cidr_block              = "10.2.2.0/24"
+  map_public_ip_on_launch = false
   tags = {
     "Name" = "ds-subnet-b-DSSharedServices"
   }

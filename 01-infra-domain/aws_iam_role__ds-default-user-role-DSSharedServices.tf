@@ -8,7 +8,7 @@ resource "aws_iam_role" "ds-default-user-role-DSSharedServices" {
           Action = "sts:AssumeRole"
           Effect = "Allow"
           Principal = {
-            AWS = format("arn:aws:iam::%s:root",data.aws_caller_identity.current.account_id)
+            AWS = format("arn:aws:iam::%s:root", data.aws_caller_identity.current.account_id)
           }
         },
         {
