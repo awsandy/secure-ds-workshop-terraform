@@ -1,0 +1,93 @@
+Description: Data Science Environment
+Parameters:
+  TeamName:
+    Type: String
+    AllowedPattern: '[a-z0-9\-]*'
+    Description: Please specify your Team Name.  Used as a suffix for team resource
+      names. Mandatory LOWER CASE.
+  EnvType:
+    Description: Please specify the target Environment. Used for tagging and resource
+      names. Mandatory LOWER CASE.
+    Type: String
+    AllowedPattern: '[a-z0-9\-]*'
+    Default: dev
+  SharedServiceStackSetName:
+    Type: String
+    Default: DSSharedServices
+    Description: Common root name used across shared service cloudformation resources
+Outputs:
+  AssumeDataScienceAdminRole:
+    Description: URL for assuming the role of a data science admininstrator
+    Value:
+      Fn::GetAtt:
+      - DSEnvironmentPrincipals
+      - Outputs.AssumeDataScienceAdminRole
+  AssumeDataScientistUserRole:
+    Description: URL for assuming the role of a data science user
+    Value:
+      Fn::GetAtt:
+      - DSEnvironmentPrincipals
+      - Outputs.AssumeDataScientistUserRole
+Resources:
+  DSEnvironmentPrincipals:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      Parameters:
+        TeamName:
+          Ref: TeamName
+        EnvType:
+          Ref: EnvType
+      TemplateURL: https://s3.eu-west-2.amazonaws.com/secure-data-science-cloudformation-24780-eu-west-2/quickstart/361ab5a8a03733fb134455c552c4e917.template
+      Tags:
+      - Key: TeamName
+        Value:
+          Ref: TeamName
+      - Key: EnvironmentType
+        Value:
+          Ref: EnvType
+  DSEnvironmentBackingStore:
+    Type: AWS::CloudFormation::Stack
+    DependsOn:
+    - DSEnvironmentPrincipals
+    Properties:
+      Parameters:
+        SharedServiceStackSetName:
+          Ref: SharedServiceStackSetName
+        TeamName:
+          Ref: TeamName
+        EnvType:
+          Ref: EnvType
+      TemplateURL: https://s3.eu-west-2.amazonaws.com/secure-data-science-cloudformation-24780-eu-west-2/quickstart/c1edf71b7274c2a72ca89d61f3de202d-tf.template
+      Tags:
+      - Key: TeamName
+        Value:
+          Ref: TeamName
+      - Key: EnvironmentType
+        Value:
+          Ref: EnvType
+  DSEnvironmentResourceGroup:
+    Type: AWS::ResourceGroups::Group
+    Properties:
+      Name:
+        Fn::Sub: ds-${TeamName}-${EnvType}-resource-group
+      Description:
+        Fn::Sub: AWS Resources belonging to ${TeamName} in its ${EnvType} environment.
+      ResourceQuery:
+        Type: TAG_FILTERS_1_0
+        Query:
+          ResourceTypeFilters:
+          - AWS::AllSupported
+          TagFilters:
+          - Key: TeamName
+            Values:
+            - Fn::Sub: ${TeamName}
+          - Key: EnvironmentType
+            Values:
+            - Fn::Sub: ${EnvType}
+      Tags:
+      - Key: TeamName
+        Value:
+          Ref: TeamName
+      - Key: EnvironmentType
+        Value:
+          Ref: EnvType

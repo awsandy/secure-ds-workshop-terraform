@@ -1,0 +1,282 @@
+Description: Data Science Environment S3 data storage
+Parameters:
+  SharedServiceStackSetName:
+    Type: String
+    Description: Common root name used across shared service cloudformation resources
+  TeamName:
+    Type: String
+    AllowedPattern: '[A-Za-z0-9\-]*'
+    Description: Please specify your team name.  Used as a suffix for team's resource
+      names.
+  EnvType:
+    Description: System Environment
+    Type: String
+    Default: dev
+Outputs:
+  KMSCMK:
+    Description: KMS Key ARN for the data and model buckets
+    Value:
+      Fn::GetAtt:
+      - KMSCMK
+      - Arn
+    Export:
+      Name:
+        Fn::Sub: ds-kms-cmk-${TeamName}-${EnvType}-arn
+  DataBucket:
+    Description: Data bucket name
+    Value:
+      Ref: DataBucket
+    Export:
+      Name:
+        Fn::Sub: ds-s3-data-${TeamName}-${EnvType}
+  ModelArtifactsBucket:
+    Description: Model artifacts bucket
+    Value:
+      Ref: ModelArtifactsBucket
+    Export:
+      Name:
+        Fn::Sub: ds-s3-models-${TeamName}-${EnvType}
+  CodeCommitUrl:
+    Description: Code Commit Repository
+    Value:
+      Fn::GetAtt:
+      - CodeCommitRepo
+      - CloneUrlHttp
+    Export:
+      Name:
+        Fn::Sub: ds-source-${TeamName}-${EnvType}-url
+Resources:
+  KMSCMK:
+    Type: AWS::KMS::Key
+    Properties:
+      Description: KMS key for S3 buckets
+      EnableKeyRotation: true
+      KeyPolicy:
+        Id: key-policy-1
+        Version: 2012-10-17
+        Statement:
+        - Sid: Enable IAM User Permissions
+          Effect: Allow
+          Principal:
+            AWS:
+              Fn::Sub: arn:aws:iam::${AWS::AccountId}:root
+          Action: kms:*
+          Resource: '*'
+        - Sid: Allow access for Key Administrators
+          Effect: Allow
+          Principal:
+            AWS: 
+              Fn::ImportValue:
+                Fn::Sub: ds-admin-role-${TeamName}-${EnvType}-arn
+          Action:
+          - kms:Create*
+          - kms:Describe*
+          - kms:Enable*
+          - kms:List*
+          - kms:Put*
+          - kms:Update*
+          - kms:Revoke*
+          - kms:Disable*
+          - kms:Get*
+          - kms:Delete*
+          - kms:TagResource
+          - kms:UntagResource
+          - kms:ScheduleKeyDeletion
+          - kms:CancelKeyDeletion
+          Resource: '*'
+        - Sid: Allow access for Key Users
+          Effect: Allow
+          Principal:
+            AWS:
+              Fn::Sub: arn:aws:iam::${AWS::AccountId}:root
+          Action:
+          - kms:Encrypt
+          - kms:Decrypt
+          - kms:CreateGrant
+          - kms:ReEncrypt
+          - kms:GenerateDataKey
+          - kms:DescribeKey
+          Resource: '*'
+          Condition:
+            StringNotEquals:
+              aws:SourceVpce: '{{resolve:ssm:ds-s3-endpoint-DSSharedServices-id:1}}'
+                #Fn::ImportValue:
+                #  Fn::Sub: ds-s3-endpoint-${SharedServiceStackSetName}-id
+      Tags:
+      - Key: TeamName
+        Value:
+          Ref: TeamName
+      - Key: EnvironmentType
+        Value:
+          Ref: EnvType
+  KMSCMKAlias:
+    Type: AWS::KMS::Alias
+    Properties:
+      AliasName:
+        Fn::Sub: alias/ds-s3-kms-cmk-${TeamName}-${EnvType}
+      TargetKeyId:
+        Ref: KMSCMK
+  KMSCMKArn:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name:
+        Fn::Sub: ds-kms-cmk-${TeamName}-${EnvType}-arn
+      Type: String
+      Value:
+        Fn::GetAtt:
+        - KMSCMK
+        - Arn
+      Description: SageMakerExecRole ARN
+  DataBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName:
+        Fn::Join:
+        - ''
+        - - ds-data-bucket-
+          - Ref: TeamName
+          - '-'
+          - Ref: EnvType
+          - '-'
+          - Fn::Select:
+            - 4
+            - Fn::Split:
+              - '-'
+              - Fn::Select:
+                - 2
+                - Fn::Split:
+                  - /
+                  - Ref: AWS::StackId
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+        - ServerSideEncryptionByDefault:
+            SSEAlgorithm: aws:kms
+            KMSMasterKeyID:
+              Ref: KMSCMK
+      Tags:
+      - Key: TeamName
+        Value:
+          Ref: TeamName
+      - Key: EnvironmentType
+        Value:
+          Ref: EnvType
+  DataBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket:
+        Ref: DataBucket
+      PolicyDocument:
+        Statement:
+        - Action:
+          - s3:GetObject
+          - s3:PutObject
+          - s3:ListBucket
+          Effect: Deny
+          Resource:
+          - Fn::Sub: arn:aws:s3:::${DataBucket}/*
+          - Fn::Sub: arn:aws:s3:::${DataBucket}
+          Principal: '*'
+          Condition:
+            StringNotEquals:
+              aws:SourceVpce: '{{resolve:ssm:ds-s3-endpoint-DSSharedServices-id:1}}'
+                #Fn::ImportValue:
+                #  Fn::Sub: ds-s3-endpoint-${SharedServiceStackSetName}-id
+  ModelArtifactsBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName:
+        Fn::Join:
+        - ''
+        - - ds-model-bucket-
+          - Ref: TeamName
+          - '-'
+          - Ref: EnvType
+          - '-'
+          - Fn::Select:
+            - 4
+            - Fn::Split:
+              - '-'
+              - Fn::Select:
+                - 2
+                - Fn::Split:
+                  - /
+                  - Ref: AWS::StackId
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+        - ServerSideEncryptionByDefault:
+            SSEAlgorithm: aws:kms
+            KMSMasterKeyID:
+              Ref: KMSCMK
+      Tags:
+      - Key: TeamName
+        Value:
+          Ref: TeamName
+      - Key: EnvironmentType
+        Value:
+          Ref: EnvType
+  ModelArtifactsBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket:
+        Ref: ModelArtifactsBucket
+      PolicyDocument:
+        Statement:
+        - Action:
+          - s3:GetObject
+          - s3:PutObject
+          - s3:ListBucket
+          Effect: Deny
+          Resource:
+          - Fn::Sub: arn:aws:s3:::${ModelArtifactsBucket}/*
+          - Fn::Sub: arn:aws:s3:::${ModelArtifactsBucket}
+          Principal: '*'
+          Condition:
+            StringNotEquals:
+              aws:SourceVpce: '{{resolve:ssm:ds-s3-endpoint-DSSharedServices-id:1}}'
+                #Fn::ImportValue:
+                #  Fn::Sub: ds-s3-endpoint-${SharedServiceStackSetName}-id
+  CodeCommitRepo:
+    Type: AWS::CodeCommit::Repository
+    Properties:
+      RepositoryName:
+        Fn::Sub: ds-source-${TeamName}-${EnvType}
+      RepositoryDescription: Data science project code repository
+      Code:
+        S3:
+          Bucket: secure-data-science-cloudformation-24780-eu-west-2
+          Key: quickstart/project_template.zip
+      Tags:
+      - Key: TeamName
+        Value:
+          Ref: TeamName
+      - Key: EnvironmentType
+        Value:
+          Ref: EnvType
+  S3DataBucketNameSSMParameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name:
+        Fn::Sub: ds-s3-data-bucket-${TeamName}-${EnvType}
+      Type: String
+      Value:
+        Ref: DataBucket
+      Description: Data Science S3 data bucket name for the project
+  S3ModelBucketNameSSMParameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name:
+        Fn::Sub: ds-s3-model-artifact-bucket-${TeamName}-${EnvType}
+      Type: String
+      Value:
+        Ref: ModelArtifactsBucket
+      Description: Data Science S3 data bucket name for the project
