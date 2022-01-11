@@ -35,6 +35,7 @@ Copy the modified Cloud Formation Templates into place (used in step 04)
 
 ```bash
 cd ~/environment/secure-ds-workshop-terraform/00-cloudformation
+./copy-cf-tos3.sh
 ```
 
 ## Terraform steps
