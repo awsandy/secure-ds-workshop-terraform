@@ -19,15 +19,15 @@ Do not do anything in Lab 2
 
 Instead we will use Terraform to:
 
-* provision and populate the ECR repo
-* Create the VPC, subnets, VPC Endpoints, IAM Roles and Policies
-* The SageMaker domain needed by the lab
-* The Code Artifact repos - populated with the required packages
-* The Service Catalog products for the environment and user profiles
+* Provision and populate the ECR repo.
+* Create the VPC, subnets, VPC Endpoints, IAM Roles and Policies.
+* Create the SageMaker domain needed by the lab.
+* Create the Code Artifact repos - populated with the required packages.
+* Create the Service Catalog products for provisioning the secure team environment and SageMaker user profiles.
 
 ----
 
-## Prepare modified Cloud formation
+## Prepare modified CloudFormation
 
 ### Step 00 - Copy modified CloudFormation
 
