@@ -106,3 +106,10 @@ terraform apply tfplan
 https://catalog.us-east-1.prod.workshops.aws/v2/workshops/c882cd42-8ec8-4112-9469-9fab33471e85/en-US/security-for-sysops/team-resources/secure-environment-lab
 
 
+-----
+
+The Terraform content was created using:
+https://github.com/aws-samples/aws2tf
+
+
+
