@@ -23,7 +23,7 @@ resource "aws_sagemaker_domain" "d-f1ggcpwannta" {
   vpc_id = aws_vpc.vpc-02dd2936ab232ef7e.id
 
   default_user_settings {
-    execution_role = data.aws_iam_role.ds-default-user-role-DSSharedServices.arn
+    execution_role = data.aws_iam_role.ds-default-user-role-DSSharedService.arn
     security_groups = [
       aws_security_group.sg-02fc8b58ffb52ffb0.id,
     ]
