@@ -17,7 +17,8 @@ resource "aws_iam_role" "sm-lambda3-LambdaExecutionRole-1CZ0D4ZWCBDIC" {
   )
   force_detach_policies = false
   managed_policy_arns = [
-    "arn:aws:iam::566972129213:policy/sm-lambda3-LambdaExecutionPolicy-15GBJRY2URBBI",
+    aws_iam_policy.sm-lambda3-LambdaExecutionPolicy-15GBJRY2URBBI.arn,
+    #"arn:aws:iam::123456789012:policy/sm-lambda3-LambdaExecutionPolicy-15GBJRY2URBBI",
     "arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess",
     "arn:aws:iam::aws:policy/AmazonS3FullAccess",
     "arn:aws:iam::aws:policy/IAMFullAccess",

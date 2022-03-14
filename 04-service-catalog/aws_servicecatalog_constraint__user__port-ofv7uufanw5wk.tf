@@ -2,7 +2,7 @@
 # aws_servicecatalog_constraint.cons-cwhftleeg7apm__port-ofv7uufanw5wk:
 resource "aws_servicecatalog_constraint" "cons-cwhftleeg7apm__port-ofv7uufanw5wk" {
   accept_language = "en"
-  description     = "Launch as arn:aws:iam::566972129213:role/DSSharedServices-ServiceCatalogLaunchRole-068c43b7c593"
+  description     = "Launch as arn:aws:iam::123456789012:role/DSSharedServices-ServiceCatalogLaunchRole-068c43b7c593"
   parameters = jsonencode(
     {
       RoleArn = data.aws_iam_role.DSSharedServices-ServiceCatalogLaunchRole-068c43b7c593.arn
