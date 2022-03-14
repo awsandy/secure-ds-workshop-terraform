@@ -65,7 +65,7 @@ resource "aws_iam_policy" "sm-lambda3-LambdaExecutionPolicy-15GBJRY2URBBI" {
             "iam:PassRole",
           ]
           Effect   = "Allow"
-          Resource = aws_iam_role.sm-lambda3-SageMakerExecutionRole-6GK0Q5CBBTSG.arn
+          Resource = aws_iam_role.ds-default-user-role-DSSharedServices.arn
           Sid      = "SageMakerExecPassRole"
         },
       ]
