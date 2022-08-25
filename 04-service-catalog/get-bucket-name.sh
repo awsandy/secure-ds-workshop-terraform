@@ -5,7 +5,10 @@ terraform state show data.aws_region.current 2&> /dev/null
 if [[ $? -eq 0 ]];then
     treg=$(terraform state show data.aws_region.current | grep name | cut -f2 -d '=' | tr -d ' |"')
 else
-    treg=$(grep tagregion vars.tf | cut -f2 -d '=' | cut -f2 -d '"')    
+    if [[ -z $TF_VAR_REGION ]];then
+        treg=$(grep tagregion vars.tf | cut -f2 -d '=' | cut -f2 -d '"') 
+    else
+        treg=$(echo $TF_VAR_REGION)   
 fi
 
 #echo $treg $tprof
