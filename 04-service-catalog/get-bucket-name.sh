@@ -17,5 +17,5 @@ fi
 #t1=`hostname | cut -f1 -d'.'`
 #BUCKET_NAME=`printf "tf-state-%s-%s" $t1 $t2 | awk '{print tolower($0)}'`
 
-BUCKET_NAME=$(aws s3 ls --region $treg | grep secure-data-science-cloudformation- | cut -f3 -d ' ')
+BUCKET_NAME=$(aws s3 ls --region $treg | grep secure-data-science-cloudformation- | grep $treg | cut -f3 -d ' ')
 jq -n --arg bn "$BUCKET_NAME" '{"Name":$bn}'
