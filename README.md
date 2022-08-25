@@ -9,10 +9,26 @@ https://catalog.us-east-1.prod.workshops.aws/v2/workshops/c882cd42-8ec8-4112-946
 Follow the workshop material: 
 
 * Create a Cloud9 Environment
-* Perform these steps in lab1:
-* * `workshop-env.sh`
-* * ./package_cloudformation.sh 
   
+* Perform these steps in lab1:
+```bash
+cd ~/environment
+git clone https://github.com/aws-samples/amazon-sagemaker-studio-secure-data-science-workshop.git
+cd ~/environment/amazon-sagemaker-studio-secure-data-science-workshop
+```
+
+```bash
+if [[ "${C9_PROJECT}" ]]; then
+  echo "In AWS Cloud9 environment"
+  export AWS_ACCOUNT_ID=`curl -s http://169.254.169.254/latest/dynamic/instance-identity/document|jq -r .accountId`
+  export AWS_DEFAULT_REGION=`curl -s http://169.254.169.254/latest/dynamic/instance-identity/document|jq -r .region`
+fi
+```
+
+```bash
+./package_cloudformation.sh 
+```
+
 
 Do not run any other steps in Lab 1 
 Do not do anything in Lab 2
