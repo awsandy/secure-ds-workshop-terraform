@@ -16,7 +16,7 @@ resource "aws_lambda_function" "SageMakerVPCEnforcer" {
   package_type                   = "Zip"
   reserved_concurrent_executions = -1
   role                           = aws_iam_role.DSSharedServices-SageMaker-DetectiveControl-02c49110ecaf.arn
-  runtime                        = "python3.6"
+  runtime                        = "python3.8"
   source_code_hash               = filebase64sha256("SageMakerVPCEnforcer.zip")
   tags                           = {}
   tags_all                       = {}
