@@ -13,6 +13,7 @@ Follow the workshop material:
 * Perform these steps in lab1:
 ```bash
 cd ~/environment
+sudo yum install jq -y
 git clone https://github.com/aws-samples/amazon-sagemaker-studio-secure-data-science-workshop.git
 cd ~/environment/amazon-sagemaker-studio-secure-data-science-workshop
 ```
