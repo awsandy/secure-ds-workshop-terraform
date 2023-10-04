@@ -8,7 +8,7 @@ output "Name" {
 
 data "aws_s3_bucket" "mybucket" {
   #bucket = data.external.bucket_name.result.Name
-  bucket=data.ssm_parameter.cf-buck.value
+  bucket=data.aws_ssm_parameter.cf-buck.value
 }
 
 
