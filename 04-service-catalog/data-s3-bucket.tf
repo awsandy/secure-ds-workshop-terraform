@@ -1,6 +1,6 @@
 
 output "Name" {
-  value = data.aws_ssm_parameter.cf-buck.valuee
+  value = data.aws_ssm_parameter.cf-buck.value
 }
 
 data "aws_s3_bucket" "mybucket" {
