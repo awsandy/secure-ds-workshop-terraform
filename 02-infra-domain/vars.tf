@@ -48,7 +48,7 @@ variable "external-conn" {
 variable "bucket-name" {
   description = "The name of the DS bucket"
   type        = string
-  default     = "secure-data-science-cloudformation-andyt"
+  default     = "secure-data-science-cloudformation-eu-west-2"
 }
 
 output "tprofile" {

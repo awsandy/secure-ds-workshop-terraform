@@ -37,7 +37,7 @@ Resources:
           Ref: TeamName
         EnvType:
           Ref: EnvType
-      TemplateURL: https://s3.eu-west-2.amazonaws.com/secure-data-science-cloudformation-24780-eu-west-2/quickstart/361ab5a8a03733fb134455c552c4e917.template
+      TemplateURL: https://s3.eu-west-2.amazonaws.com/secure-data-science-cloudformation-eu-west-2/quickstart/361ab5a8a03733fb134455c552c4e917.template
       Tags:
       - Key: TeamName
         Value:
@@ -57,7 +57,7 @@ Resources:
           Ref: TeamName
         EnvType:
           Ref: EnvType
-      TemplateURL: https://s3.eu-west-2.amazonaws.com/secure-data-science-cloudformation-24780-eu-west-2/quickstart/c1edf71b7274c2a72ca89d61f3de202d-tf.template
+      TemplateURL: https://s3.eu-west-2.amazonaws.com/secure-data-science-cloudformation-eu-west-2/quickstart/c1edf71b7274c2a72ca89d61f3de202d-tf.template
       Tags:
       - Key: TeamName
         Value:
