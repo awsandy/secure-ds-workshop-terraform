@@ -1,9 +1,6 @@
-data "external" "bucket_name" {
-  program = ["bash", "get-bucket-name.sh"]
-}
 
 output "Name" {
-  value = data.external.bucket_name.result.Name
+  value = data.aws_ssm_parameter.cf-buck.valuee
 }
 
 data "aws_s3_bucket" "mybucket" {
