@@ -6,6 +6,9 @@ if [[ -z "$reg" ]]; then
     aws configure set region $AWS_REGION
     reg=$(aws configure get region)
 fi
+## 
+## bucket is created by prior ./package_cloudformation.sh  step
+##
 buck=$(aws s3 ls | grep secure-data-science-cloudformation | grep $reg | cut -f3 -d ' ')
 ## sed stuff
 if [[ ! -z $buck ]]; then
