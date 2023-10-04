@@ -6,8 +6,7 @@ if [[ -z "$reg" ]]; then
     aws configure set region $AWS_REGION
     reg=$(aws configure get region)
 fi
-buck=$(echo "secure-data-science-cloudformation-$reg")
-aws s3 mb s3://secure-data-science-cloudformation-$reg --region $reg || true
+buck=$(aws s3 ls | grep secure-data-science-cloudformation | grep $reg | cut -f3 -d ' ')
 if [[ ! -z $buck ]]; then
     aws ssm put-parameter --name ds-s3-cloudformation-bucket --value $buck --type String --overwrite
     aws s3 cp ds_environment-tf.yaml s3://$buck/quickstart/ds_environment-tf.yaml

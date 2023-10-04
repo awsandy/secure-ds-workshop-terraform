@@ -253,7 +253,7 @@ Resources:
       RepositoryDescription: Data science project code repository
       Code:
         S3:
-          Bucket: secure-data-science-cloudformation-eu-west-2
+          Bucket: secure-data-science-cloudformation-24780-eu-west-2
           Key: quickstart/project_template.zip
       Tags:
       - Key: TeamName
