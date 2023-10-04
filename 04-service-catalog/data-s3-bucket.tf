@@ -12,7 +12,7 @@ data "aws_s3_bucket" "mybucket" {
 }
 
 
-data "ssm_parameter" "cf-buck" {
+data "aws_ssm_parameter" "cf-buck" {
   name = "ds-s3-cloudformation-bucket"
 }
 
